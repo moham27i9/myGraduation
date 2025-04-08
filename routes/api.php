@@ -6,6 +6,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LawyerController;
 use Illuminate\Support\Facades\Route;
 
+// Authentication Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
 //  Authenticated Routes
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -14,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     //  Admin Only Routes
-    Route::middleware('role:admin')->group(function () {
+    Route::middleware('admin')->group(function () {
 
         //   employees managment 
         Route::apiResource('/employees', EmployeeController::class);
@@ -23,12 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
         //   lawyers managment
         Route::apiResource('/lawyers', LawyerController::class);
         Route::post('/lawyers/create/{id}', [LawyerController::class, 'store']);
-
-   
     });
-
-    // 📌 Shared routes (لجميع المستخدمين المسجلين)
-   
-    
 });
 

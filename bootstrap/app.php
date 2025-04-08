@@ -15,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('api', [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
-        $middleware->append(App\Http\Middleware\AdminMiddleware::class);
+
+        $middleware->group('admin', [
+            App\Http\Middleware\AdminMiddleware::class
+        ]);
+       
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
