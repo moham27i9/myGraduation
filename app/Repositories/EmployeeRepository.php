@@ -20,6 +20,7 @@ class EmployeeRepository
     public function create(array $data)
     {
         $user = User::findOrFail($data['user_id']);
+        
         return Employee::create($data);
     }
 

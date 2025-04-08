@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\CreateEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 use App\Services\EmployeeService;
 use Illuminate\Http\Request;
 
@@ -19,14 +22,10 @@ class EmployeeController extends Controller
         return $this->employeeService->list();
     }
 
-    public function store(Request $request,$id)
+    public function store(CreateEmployeeRequest $request,$id)
     {
-        $validated = $request->validate([
-            'hire_date' => 'required|date',
-            'salary' => 'required|numeric',
-            'certificate' => 'required|string',
-        ]);
-        return $this->employeeService->create($id,$validated);
+       
+        return $this->employeeService->create($id,$request->validated());
     }
 
     public function show($id)
@@ -34,14 +33,10 @@ class EmployeeController extends Controller
         return $this->employeeService->show($id);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateEmployeeRequest $request, $id)
     {
-        $validated = $request->validate([
-            'hire_date' => 'sometimes|date',
-            'salary' => 'sometimes|numeric',
-            'certificate' => 'sometimes|string',
-        ]);
-        return $this->employeeService->update($id, $validated);
+       
+        return $this->employeeService->update($id, $request->validated());
     }
 
     public function destroy($id)

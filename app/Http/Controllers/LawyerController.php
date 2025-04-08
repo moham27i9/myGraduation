@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLawyerRequest;
+use App\Http\Requests\UpdateLawyerRequest;
 use App\Services\LawyerService;
 use App\Traits\ApiResponseTrait;
 
@@ -17,11 +18,38 @@ class LawyerController extends Controller
         $this->lawyerService = $lawyerService;
     }
 
-    public function store(CreateLawyerRequest $request)
+    public function store(CreateLawyerRequest $request,$id)
     {
-        $lawyer = $this->lawyerService->create($request->validated());
+        $lawyer = $this->lawyerService->create($request->validated(),$id);
         return $this->successResponse($lawyer, 'Lawyer created successfully');
         return $this->errorResponse('Lawyer created failed', 500);
     }
+
+    // app/Http/Controllers/LawyerController.php
+
+public function index()
+{
+    $lawyers = $this->lawyerService->getAll();
+    return $this->successResponse($lawyers, 'All lawyers retrieved');
+}
+
+public function show($id)
+{
+    $lawyer = $this->lawyerService->getById($id);
+    return $this->successResponse($lawyer, 'Lawyer retrieved');
+}
+
+public function update(UpdateLawyerRequest $request, $id)
+{
+    $lawyer = $this->lawyerService->update($id, $request->validated());
+    return $this->successResponse($lawyer, 'Lawyer updated');
+}
+
+public function destroy($id)
+{
+    $this->lawyerService->delete($id);
+    return $this->successResponse(null, 'Lawyer deleted');
+}
+
 }
 

@@ -6,10 +6,10 @@ use App\Models\Lawyer;
 
 class LawyerRepository
 {
-    public function create(array $data)
+    public function create(array $data,$id)
     {
         return Lawyer::create([
-            'user_id' => $data['user_id'],
+            'user_id' => $id,
             'license_number' => $data['license_number'],
             'experience_years' => $data['experience_years'],
             'type' => $data['type'],
@@ -18,4 +18,37 @@ class LawyerRepository
             'certificate' => $data['certificate'],
         ]);
     }
+
+
+    // app/Repositories/LawyerRepository.php
+
+public function getAll()
+{
+    return Lawyer::all(); // لجلب معلومات المستخدم المرتبط
+    // return Lawyer::with('user')->get(); // لجلب معلومات المستخدم المرتبط
+}
+
+public function getById($id)
+{
+    return Lawyer::findOrFail($id);
+}
+
+public function update($id, array $data)
+{
+    $lawyer = Lawyer::findOrFail($id);
+    $lawyer->update($data);
+    return $lawyer;
+}
+
+public function delete($id)
+{
+    $lawyer = Lawyer::findOrFail($id);
+    $lawyer->delete();
+
+    // حذف المستخدم المرتبط إذا أردت
+    // User::destroy($lawyer->user_id);
+
+    return true;
+}
+
 }

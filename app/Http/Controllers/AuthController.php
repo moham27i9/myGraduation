@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Traits\ApiResponseTrait;
 use App\Services\AuthService;
+use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\LoginUserRequest;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -15,36 +17,16 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
-
-        return $this->authService->register($validated);
+        return $this->authService->register($request->validated());
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        return $this->authService->login($credentials);
+        return $this->authService->login($request->validated());
     }
 
-
-
-    //user profile
-    public function userProfile(Request $request)
-    {
-        return response()->json([
-            'user' => $request->user(),
-        ]);
-    }
 
     //logout
     public function logout(Request $request)
@@ -55,9 +37,5 @@ class AuthController extends Controller
          
     }
 
-    // public function show($id)
-    // {
-    //     $post = $this->userService->getPost($id);
-    //     return view('post.show', compact('post'));
-    // }
+
 }
