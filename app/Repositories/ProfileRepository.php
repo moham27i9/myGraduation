@@ -19,4 +19,24 @@ class ProfileRepository
            'user_id'=> $user_id,
         ]);
     }
+
+        public function findByUserId($userId)
+    {
+        return Profile::where('user_id', $userId)->firstOrFail();
+    }
+
+    public function updateByUserId($userId, array $data)
+    {
+        $profile = Profile::where('user_id', $userId)->firstOrFail();
+        $profile->update($data);
+        return $profile;
+    }
+
+    public function deleteByUserId($userId)
+    {
+        $profile = Profile::where('user_id', $userId)->firstOrFail();
+        $profile->delete();
+        return true;
+    }
+
 }

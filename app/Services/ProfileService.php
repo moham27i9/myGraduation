@@ -17,4 +17,20 @@ class ProfileService
     {
         return $this->profileRepository->create($data);
     }
+
+        public function getByCurrentUser()
+    {
+        return $this->profileRepository->findByUserId(auth()->id());
+    }
+
+    public function updateCurrentUser(array $data)
+    {
+        return $this->profileRepository->updateByUserId(auth()->id(), $data);
+    }
+
+    public function deleteCurrentUser()
+    {
+        return $this->profileRepository->deleteByUserId(auth()->id());
+    }
+
 }

@@ -10,4 +10,6 @@ class AuthRepository
     {
         return User::create($data);
     }
+
+   
 }

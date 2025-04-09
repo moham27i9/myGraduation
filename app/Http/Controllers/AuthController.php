@@ -37,5 +37,13 @@ class AuthController extends Controller
          
     }
 
+    public function destroy($id)
+    {
+
+      return $this->authService->delete($id);
+       
+       
+    }
+    
 
 }

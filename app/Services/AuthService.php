@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\Role;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Hash;
@@ -49,4 +50,18 @@ class AuthService
             200
         );
     }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        if($id != 1 || $user->role_id !=1){
+
+            $user->delete(); 
+            return $this->successResponse(null, 'تم حذف المستخدم وكل البيانات المرتبطة به',200);
+        }
+         else
+         return $this->errorResponse(null, 'لا يمكن حذف المستخدم صاحب دور المدير',422);
+
+    }
+
 }
