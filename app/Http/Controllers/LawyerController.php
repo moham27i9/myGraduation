@@ -21,8 +21,9 @@ class LawyerController extends Controller
     public function store(CreateLawyerRequest $request,$id)
     {
         $lawyer = $this->lawyerService->create($request->validated(),$id);
+        if(!$lawyer )
+        return $this->errorResponse('this user is actually registered as lawyer!', 422);
         return $this->successResponse($lawyer, 'Lawyer created successfully');
-        return $this->errorResponse('Lawyer created failed', 500);
     }
 
     // app/Http/Controllers/LawyerController.php

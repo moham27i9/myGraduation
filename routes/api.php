@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LawyerController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
@@ -14,7 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 
     //  Profile & Logout
-    Route::get('/user', [AuthController::class, 'userProfile']);
+    Route::post('/profiles/create/', [ProfileController::class, 'store']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     //  Admin Only Routes

@@ -20,7 +20,16 @@ class LawyerService
         return DB::transaction(function () use ($data,$id) {
             // تحديث role_id للمستخدم إلى 5 (محامي)
             $user = User::findOrFail($id);
-            $user->role_id = 5;
+        
+            if ($user->lawyer) {
+               return null;
+            }
+    
+            if ($user->employee) {
+                $user->employee->delete();
+            }
+
+            $user->role_id = 5; // role: lawyer
             $user->save();
 
             // إنشاء المحامي

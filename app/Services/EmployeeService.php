@@ -22,32 +22,36 @@ class EmployeeService
         return $this->successResponse($employee, 'success');  
     }
 
-    public function create($id,$data)
+    public function create($id, $data)
     {
-        return DB::transaction(function () use ($data,$id) {
-            // تحديث role_id للمستخدم إلى 5 (محامي)
+        return DB::transaction(function () use ($data, $id) {
+    
             $user = User::findOrFail($id);
-        
-            // تحديد الدور حسب النوع
+    
+            if ($user->employee) {
+                return $this->errorResponse('هذا المستخدم مسجل بالفعل كموظف!', 422);
+            }
+            if ($user->lawyer) {
+                $user->lawyer->delete();
+            }
+    
             if (strtolower($data['type']) === 'hr') {
                 $user->role_id = 3;
-                $user->save();
             } elseif (strtolower($data['type']) === 'accountant') {
                 $user->role_id = 4;
-                $user->save();
-            }
+            } 
+            $user->save();
             $employee = $this->employeeRepository->create([
                 'hire_date' => $data['hire_date'],
                 'salary' => $data['salary'],
                 'certificate' => $data['certificate'],
-                'user_id'=> $id
-                
+                'user_id' => $id
             ]);
-            return $this->successResponse($employee, 'Employee added successfully'); 
+    
+            return $this->successResponse($employee, 'تمت إضافة الموظف بنجاح');
         });
-        
-        return $this->errorResponse('Employee added failed', 500);
     }
+    
 
     public function show($id)
     {
