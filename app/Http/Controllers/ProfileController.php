@@ -20,6 +20,7 @@ class ProfileController extends Controller
 
     public function store(CreateProfileRequest $request)
     {
+        // comment 1
         $profile = $this->profileService->create($request->validated());
         return $this->successResponse($profile, 'Profile created successfully');
     }
